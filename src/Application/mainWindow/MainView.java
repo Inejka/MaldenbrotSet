@@ -8,8 +8,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -36,6 +35,23 @@ public class MainView extends VBox {
                     oldCenterCoordinates.getY() - mouseClickCoordinates.getY() + e.getY()));
     };
 
+    EventHandler<ScrollEvent> scroll = e -> {
+        System.out.println(cartesianCoordinateSystemView.getRelativeCoordinates(new Coordinates(e.getX(),e.getY())).getX());
+        if(e.getDeltaY()>0)
+        cartesianCoordinateSystemView.zoom(new Coordinates(e.getX(), e.getY()));
+        else
+            cartesianCoordinateSystemView.unZoom(new Coordinates(e.getX(), e.getY()));
+    };
+
+    EventHandler<KeyEvent> keyPressed = e -> {
+        if (e.getCode() == KeyCode.D) {
+            cartesianCoordinateSystemView.moveCenter(cartesianCoordinateSystemView.gerUnRelativeCoordinates(new Coordinates(-1, 0)));
+        }
+        if(e.getCode()==KeyCode.W){
+            cartesianCoordinateSystemView.moveCenter(cartesianCoordinateSystemView.gerUnRelativeCoordinates(new Coordinates(0, -1)));
+        }
+    };
+
 
     public MainView() {
         mainToolBarInit();
@@ -43,6 +59,8 @@ public class MainView extends VBox {
         cartesianCoordinateSystemView.prefWidthProperty().bind(widthProperty());
         cartesianCoordinateSystemView.setOnMouseDragged(mouseMoved);
         cartesianCoordinateSystemView.setOnMousePressed(mouseClicked);
+        cartesianCoordinateSystemView.setOnScroll(scroll);
+        setOnKeyPressed(keyPressed);
         getChildren().addAll(cartesianCoordinateSystemView, mainToolBar);
     }
 

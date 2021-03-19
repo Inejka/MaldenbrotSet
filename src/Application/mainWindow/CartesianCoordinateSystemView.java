@@ -17,8 +17,9 @@ public class CartesianCoordinateSystemView extends Pane {
 
     ImageView imageView = new ImageView();
 
-    Coordinates currentStep = new Coordinates(0.003, 0.003);
+    Coordinates currentStep = new Coordinates(0.1, 0.1);
     Coordinates center = new Coordinates(0, 0);
+    double scale = 1.1;
 
     public CartesianCoordinateSystemView() {
         getChildren().add(imageView);
@@ -51,8 +52,8 @@ public class CartesianCoordinateSystemView extends Pane {
     }
 
     public void moveCenter(Coordinates delta) {
-        center.setX(center.getX() + delta.getX());
-        center.setY(center.getY() + delta.getY());
+        center.setX(delta.getX());
+        center.setY(delta.getY());
         updateUI();
     }
 
@@ -77,10 +78,10 @@ public class CartesianCoordinateSystemView extends Pane {
                 if (Math.abs(normalCoordinates.getX()) < currentStep.getX()) writer.setColor(i, j, Color.BLACK);
                 if (Math.abs(normalCoordinates.getY()) < currentStep.getY()) writer.setColor(i, j, Color.BLACK);
                 int color = isMald(normalCoordinates);
-                if(color==100)writer.setColor(i,j,Color.BLACK);
-                else writer.setColor(i,j,Color.color(color/100.0,color/100.0,color/100.0));
+                if (color == 100) writer.setColor(i, j, Color.BLACK);
+                else writer.setColor(i, j, Color.color(color / 100.0, color / 100.0, color / 100.0));
                 //if (Math.abs(normalCoordinates.getY()) < currentStep.getY() &&
-                //      normalCoordinates.getX() % 10.0 == 0) kostil.add(new Coordinates(i, j));
+                //       normalCoordinates.getX() % 10.0 == 0) kostil.add(new Coordinates(i, j));
                 // if (i == (int) center.getY()) writer.setColor(i, j, Color.BLACK);
                 //if (j == (int) center.getX()) writer.setColor(i, j, Color.BLACK);
             }
@@ -99,9 +100,30 @@ public class CartesianCoordinateSystemView extends Pane {
         return 100;
     }
 
-    private Coordinates getRelativeCoordinates(Coordinates coordinates) {
+    public void zoom(Coordinates mousePos) {
+        setCenter(center.getX() * scale + mousePos.getX() * (1 - scale),
+                center.getY() * scale + mousePos.getY() * (1 - scale));
+        currentStep.setX(currentStep.getX() / scale);
+        currentStep.setY(currentStep.getY() / scale);
+        updateUI();
+    }
+
+    public void unZoom(Coordinates mousePos) {
+        setCenter((mousePos.getX()*(scale-1)+center.getX())/scale,
+                (center.getY()+mousePos.getY()*(scale-1))/scale);
+        currentStep.setX(currentStep.getX() * scale);
+        currentStep.setY(currentStep.getY() * scale);
+
+        updateUI();
+    }
+
+    public Coordinates getRelativeCoordinates(Coordinates coordinates) {
         return new Coordinates(currentStep.getX() * (coordinates.getX() - center.getX())
                 , currentStep.getY() * (center.getY() - coordinates.getY()));
+    }
+
+    public Coordinates gerUnRelativeCoordinates(Coordinates coordinates) {
+        return new Coordinates(coordinates.getX() / currentStep.getX() + center.getX(), center.getY() - coordinates.getY() / currentStep.getY());
     }
 
     private void setVerticalStick(List<Coordinates> coordinatesList, PixelWriter writer) {
