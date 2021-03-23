@@ -13,6 +13,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.math.BigDecimal;
+
 public class MainView extends VBox {
     public final CartesianCoordinateSystemView cartesianCoordinateSystemView = new CartesianCoordinateSystemView();
     public final ToolBar mainToolBar = new ToolBar();
@@ -31,25 +33,25 @@ public class MainView extends VBox {
 
     EventHandler<MouseEvent> mouseMoved = e -> {
         if (e.isPrimaryButtonDown())
-            cartesianCoordinateSystemView.setCenter(new Coordinates(oldCenterCoordinates.getX() - mouseClickCoordinates.getX() + e.getX(),
-                    oldCenterCoordinates.getY() - mouseClickCoordinates.getY() + e.getY()));
+            cartesianCoordinateSystemView.setCenter(new Coordinates(oldCenterCoordinates.getX().subtract(mouseClickCoordinates.getX()).add(BigDecimal.valueOf(e.getX())),
+                    oldCenterCoordinates.getY().subtract(mouseClickCoordinates.getY()).add(BigDecimal.valueOf(e.getY()))));
     };
 
     EventHandler<ScrollEvent> scroll = e -> {
-        System.out.println(cartesianCoordinateSystemView.getRelativeCoordinates(new Coordinates(e.getX(),e.getY())).getX());
+        /*System.out.println(cartesianCoordinateSystemView.getRelativeCoordinates(new Coordinates(e.getX(),e.getY())).getX());
         if(e.getDeltaY()>0)
         cartesianCoordinateSystemView.zoom(new Coordinates(e.getX(), e.getY()));
         else
-            cartesianCoordinateSystemView.unZoom(new Coordinates(e.getX(), e.getY()));
+            cartesianCoordinateSystemView.unZoom(new Coordinates(e.getX(), e.getY()));*/
     };
 
     EventHandler<KeyEvent> keyPressed = e -> {
-        if (e.getCode() == KeyCode.D) {
+     /*   if (e.getCode() == KeyCode.D) {
             cartesianCoordinateSystemView.moveCenter(cartesianCoordinateSystemView.gerUnRelativeCoordinates(new Coordinates(-1, 0)));
         }
         if(e.getCode()==KeyCode.W){
             cartesianCoordinateSystemView.moveCenter(cartesianCoordinateSystemView.gerUnRelativeCoordinates(new Coordinates(0, -1)));
-        }
+        }*/
     };
 
 
