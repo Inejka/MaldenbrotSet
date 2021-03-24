@@ -1,6 +1,7 @@
 package Application.mainWindow;
 
 import Support.Coordinates;
+import Support.ScientificNotation;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -17,9 +18,9 @@ public class Painter {
         for (int i = 0; i < width; i++)
             for (int j = 0; j < height; j++) {
                 writer.setColor(i, j, Color.WHITE);
-                if (coordinates[i][j].getX().compareTo(BigDecimal.ZERO) == 0)
+                if (coordinates[i][j].getX().compareTo(ScientificNotation.ZERO) == 0)
                     writer.setColor(i, j, Color.BLACK);
-                if (coordinates[i][j].getY().compareTo(BigDecimal.ZERO) == 0)
+                if (coordinates[i][j].getY().compareTo(ScientificNotation.ZERO) == 0)
                     writer.setColor(i, j, Color.BLACK);
             }
         return toReturn;

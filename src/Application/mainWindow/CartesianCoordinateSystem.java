@@ -11,13 +11,13 @@ public class CartesianCoordinateSystem {
     public int width = 1;
     public int height = 1;
 
-    Coordinates currentStep = new Coordinates(0.1, 0.1);
-    Coordinates center = new Coordinates(0, 0);
+    Coordinates currentStep = new Coordinates(String.valueOf(0.1), String.valueOf(0.1));
+    Coordinates center = new Coordinates(String.valueOf(0), String.valueOf(0));
     BigDecimal scale = BigDecimal.valueOf(1.1);
 
     public void updateCenter() {
-        center.setX((Math.round(width)) / 2.0);
-        center.setY((Math.round(height)) / 2.0);
+        center.setX(String.valueOf((Math.round(width)) / 2.0));
+        center.setY(String.valueOf((Math.round(height)) / 2.0));
     }
 
     public Coordinates getCenter() {
@@ -34,16 +34,19 @@ public class CartesianCoordinateSystem {
     }
 
     public void setCenter(double X, double Y) {
-        center.setX(X);
-        center.setY(Y);
+        center.setX(String.valueOf(X));
+        center.setY(String.valueOf(Y));
     }
 
     public Coordinates[][] getMatr() throws InterruptedException {
         Coordinates[][] toReturn = new Coordinates[width][height];
-        ThreadTest test1 = new ThreadTest(toReturn, 0, 0, width / 2, height / 2, currentStep, center);
-        ThreadTest test2 = new ThreadTest(toReturn, width / 2, 0, width-1, height / 2, currentStep, center);
-        ThreadTest test3 = new ThreadTest(toReturn, 0, height / 2, width / 2, height-1, currentStep, center);
-        ThreadTest test4 = new ThreadTest(toReturn, width / 2, height / 2, width-1, height-1, currentStep, center);
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+                toReturn[i][j] = getRelativeCoordinates(new Coordinates(String.valueOf(i),String.valueOf(j)));
+        /*ThreadTest test1 = new ThreadTest(toReturn, 0, 0, width / 2, height / 2, currentStep, center);
+        ThreadTest test2 = new ThreadTest(toReturn, width / 2, 0, width - 1, height / 2, currentStep, center);
+        ThreadTest test3 = new ThreadTest(toReturn, 0, height / 2, width / 2, height - 1, currentStep, center);
+        ThreadTest test4 = new ThreadTest(toReturn, width / 2, height / 2, width - 1, height - 1, currentStep, center);
         test1.start();
         test2.start();
         test3.start();
@@ -51,7 +54,7 @@ public class CartesianCoordinateSystem {
         test1.join();
         test2.join();
         test3.join();
-        test4.join();
+        test4.join();*/
         return toReturn;
     }
 

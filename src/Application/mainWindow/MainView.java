@@ -2,6 +2,7 @@ package Application.mainWindow;
 
 import Support.ActionButton;
 import Support.Coordinates;
+import Support.ScientificNotation;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ToolBar;
@@ -26,15 +27,15 @@ public class MainView extends VBox {
 
     EventHandler<MouseEvent> mouseClicked = e -> {
         if (e.getButton() == MouseButton.PRIMARY) {
-            mouseClickCoordinates = new Coordinates(e.getX(), e.getY());
+            mouseClickCoordinates = new Coordinates(String.valueOf(e.getX()), String.valueOf(e.getY()));
             oldCenterCoordinates = cartesianCoordinateSystemView.getCenter();
         }
     };
 
     EventHandler<MouseEvent> mouseMoved = e -> {
         if (e.isPrimaryButtonDown())
-            cartesianCoordinateSystemView.setCenter(new Coordinates(oldCenterCoordinates.getX().subtract(mouseClickCoordinates.getX()).add(BigDecimal.valueOf(e.getX())),
-                    oldCenterCoordinates.getY().subtract(mouseClickCoordinates.getY()).add(BigDecimal.valueOf(e.getY()))));
+            cartesianCoordinateSystemView.setCenter(new Coordinates(oldCenterCoordinates.getX().subtract(mouseClickCoordinates.getX()).add(ScientificNotation.valueOf(e.getX())),
+                    oldCenterCoordinates.getY().subtract(mouseClickCoordinates.getY()).add(ScientificNotation.valueOf(e.getY()))));
     };
 
     EventHandler<ScrollEvent> scroll = e -> {

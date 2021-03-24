@@ -1,49 +1,42 @@
 package Support;
 
 
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class Coordinates {
-    private BigDecimal X, Y;
+    private ScientificNotation X, Y;
 
-    public BigDecimal getY() {
+    public ScientificNotation getY() {
         return Y;
     }
 
-    public void setY(double y) {
-        Y = BigDecimal.valueOf(y);
-        Y.setScale(20, RoundingMode.CEILING);
+    public void setY(String y) {
+        Y = new ScientificNotation(y);
     }
 
-    public BigDecimal getX() {
+    public ScientificNotation getX() {
         return X;
     }
 
-    public void setX(double x) {
-        X = BigDecimal.valueOf(x);
-        X.setScale(20, RoundingMode.CEILING);
+    public void setX(String x) {
+        X = new ScientificNotation(x);
     }
 
-    public Coordinates(double x, double y) {
-        X = new BigDecimal(x);
-        Y = new BigDecimal(y);
-        X.setScale(20, RoundingMode.CEILING);
-        Y.setScale(20, RoundingMode.CEILING);
+    public Coordinates(String x, String y) {
+        X = new ScientificNotation(x);
+        Y = new ScientificNotation(y);
     }
 
-    public void setX(BigDecimal x) {
+    public void setX(ScientificNotation x) {
         X = x;
     }
 
-    public void setY(BigDecimal y) {
+    public void setY(ScientificNotation y) {
         Y = y;
     }
 
-    public Coordinates(BigDecimal x, BigDecimal y) {
+    public Coordinates(ScientificNotation x, ScientificNotation y) {
         X = x;
         Y = y;
-        X.setScale(20, RoundingMode.CEILING);
-        Y.setScale(20, RoundingMode.CEILING);
     }
 }

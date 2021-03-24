@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public class ScientificNotation {
-    private static int SCALE = 15;
+    private static int SCALE = 30;
     private long exponent = 0;
     BigDecimal mantissa;
 
@@ -16,7 +16,7 @@ public class ScientificNotation {
     private ScientificNotation() {
     }
 
-    ScientificNotation multiply(ScientificNotation rhs) {
+    public ScientificNotation multiply(ScientificNotation rhs) {
         ScientificNotation result = new ScientificNotation();
         result.mantissa = mantissa.multiply(rhs.mantissa);
         result.exponent = exponent + rhs.exponent;
@@ -24,7 +24,7 @@ public class ScientificNotation {
         return result;
     }
 
-    ScientificNotation divide(ScientificNotation rhs) {
+    public ScientificNotation divide(ScientificNotation rhs) {
         ScientificNotation result = new ScientificNotation();
         result.mantissa = mantissa.divide(rhs.mantissa);
         result.exponent = exponent - rhs.exponent;
@@ -32,7 +32,7 @@ public class ScientificNotation {
         return result;
     }
 
-    ScientificNotation add(ScientificNotation rhs) {
+    public ScientificNotation add(ScientificNotation rhs) {
         ScientificNotation result = new ScientificNotation();
         if (Math.abs(exponent - rhs.exponent) > 30) {
             result.mantissa = (exponent > rhs.exponent) ? mantissa : rhs.mantissa;
@@ -48,7 +48,7 @@ public class ScientificNotation {
         return result;
     }
 
-    ScientificNotation subtract(ScientificNotation rhs) {
+    public ScientificNotation subtract(ScientificNotation rhs) {
         ScientificNotation result = new ScientificNotation();
         if (Math.abs(exponent - rhs.exponent) > 30) {
             result.mantissa = (exponent > rhs.exponent) ? mantissa : rhs.mantissa;
@@ -76,4 +76,32 @@ public class ScientificNotation {
     public String toString() {
         return mantissa + "E" + exponent;
     }
+
+    public static ScientificNotation valueOf(double val) {
+        return new ScientificNotation(String.valueOf(val));
+    }
+
+    public static ScientificNotation valueOf(int val) {
+        return new ScientificNotation(String.valueOf(val));
+    }
+
+    public static ScientificNotation valueOf(float val) {
+        return new ScientificNotation(String.valueOf(val));
+    }
+
+    public static ScientificNotation valueOf(String val) {
+        return new ScientificNotation(val);
+    }
+
+    public ScientificNotation(double val) {
+        this(String.valueOf(val));
+    }
+
+    public final static ScientificNotation ZERO = new ScientificNotation("0");
+
+    public int compareTo(ScientificNotation rhs) {
+        if (rhs.exponent != exponent) return (exponent > rhs.exponent) ? 1 : -1;
+        else return mantissa.compareTo(rhs.mantissa);
+    }
+
 }

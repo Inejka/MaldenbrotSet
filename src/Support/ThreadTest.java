@@ -12,7 +12,7 @@ public class ThreadTest extends Thread {
     public void run() {
         for (int i = iS; i <= iE; i++)
             for (int j = jS; j <= jE; j++)
-                coordinates[i][j] = getRelativeCoordinates(new Coordinates(i, j));
+                coordinates[i][j] = getRelativeCoordinates(new Coordinates(String.valueOf(i), String.valueOf(j)));
     }
 
     public ThreadTest(Coordinates[][] coordinates, int iS, int jS, int iE, int jE, Coordinates currentStep, Coordinates center) {
